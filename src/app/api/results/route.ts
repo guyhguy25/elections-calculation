@@ -12,7 +12,9 @@ export async function GET() {
     const body: ResultsResponse = { ok: true, data };
     return NextResponse.json(body, {
       headers: {
-        "Cache-Control": "no-store, max-age=0",
+        "Cache-Control": "private, no-store, no-cache, must-revalidate, max-age=0",
+        "CDN-Cache-Control": "no-store",
+        "Vercel-CDN-Cache-Control": "no-store",
       },
     });
   } catch (err) {
@@ -22,7 +24,9 @@ export async function GET() {
     return NextResponse.json(body, {
       status: 502,
       headers: {
-        "Cache-Control": "no-store, max-age=0",
+        "Cache-Control": "private, no-store, no-cache, must-revalidate, max-age=0",
+        "CDN-Cache-Control": "no-store",
+        "Vercel-CDN-Cache-Control": "no-store",
       },
     });
   }
