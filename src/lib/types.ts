@@ -1,28 +1,34 @@
-export type PartyVotes = {
+export type PartyRow = {
   name: string;
   letters: string;
+  percentOfValid: number;
   votes: number;
 };
 
-export type PartyMandate = PartyVotes & {
-  exact: number;
-  remainder: number;
+export type QualifyingParty = PartyRow & {
+  shareOfVotesSoFar: number;
+  exactMandates: number;
   seats: number;
+  remainder: number;
   gotRemainderSeat: boolean;
-  seatDelta: number | null;
 };
 
 export type MandateSnapshot = {
-  asOf: string | null;
+  sourceUrl: string;
+  publishedAsOf: string | null;
+  fetchedAt: string;
+  eligibleVoters: number | null;
   votesSoFar: number;
-  validVotes: number | null;
-  threshold: number;
+  stationsSoFar: number | null;
+  validVotes: number;
+  invalidVotes: number | null;
+  blockPercent: number;
+  blockThresholdVotes: number;
   kosherVotes: number;
   electoralMandate: number;
-  parties: PartyMandate[];
-  sourceUrl: string;
-  fetchedAt: string;
-  usedFallback: boolean;
+  qualifying: QualifyingParty[];
+  belowThreshold: PartyRow[];
+  parties: PartyRow[];
 };
 
 export type ResultsResponse =

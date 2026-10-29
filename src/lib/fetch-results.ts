@@ -1,47 +1,59 @@
-import { computeMandates } from "@/lib/calc";
-import { parseOfficialResults } from "@/lib/parse";
-import type { MandateSnapshot } from "@/lib/types";
+import { calculateMandates } from "./calc";
+import { parseOfficialMarkdown } from "./parse";
+import type { MandateSnapshot } from "./types";
 
-const OFFICIAL_URL =
+export const OFFICIAL_URL =
   "https://votes26.bechirot.gov.il/nationalresults?lang=he";
-const JINA_READER = `https://r.jina.ai/${OFFICIAL_URL}`;
+
+const READER_URL = `https://r.jina.ai/${OFFICIAL_URL}`;
 
 async function fetchText(url: string): Promise<string> {
   const res = await fetch(url, {
-    cache: "no-store",
     headers: {
-      "User-Agent": "MandateTracker/1.0 (+local)",
-      Accept: "text/html,text/plain,*/*",
+      "User-Agent":
+        "Mozilla/5.0 (compatible; ElectionMandateTracker/1.0; +local)",
+      Accept: "text/html,text/plain,text/markdown,*/*",
     },
+    cache: "no-store",
   });
   if (!res.ok) {
-    throw new Error(`${url} -> ${res.status}`);
+    throw new Error(`Fetch failed (${res.status}) from ${url}`);
   }
   return res.text();
 }
 
+function looksLikeResults(text: string): boolean {
+  return (
+    text.includes("קולות עד עתה") &&
+    text.includes("קולות כשרים לרשימה") &&
+    (text.includes("| שם הרשימה") || text.includes("שם הרשימה"))
+  );
+}
+
 export async function loadMandateSnapshot(): Promise<MandateSnapshot> {
-  let html = "";
-  let usedFallback = false;
+  const fetchedAt = new Date().toISOString();
+  let text = "";
+  let sourceUrl = OFFICIAL_URL;
 
   try {
-    html = await fetchText(OFFICIAL_URL);
-    // Sanity: official page should mention Hebrew labels we parse.
-    if (!html.includes("קולות עד עתה") && !html.includes("שם הרשימה")) {
-      throw new Error("Official page missing expected labels");
+    text = await fetchText(OFFICIAL_URL);
+    if (!looksLikeResults(text)) {
+      throw new Error("Official HTML did not include the results table");
     }
   } catch {
-    html = await fetchText(JINA_READER);
-    usedFallback = true;
+    sourceUrl = OFFICIAL_URL;
+    text = await fetchText(READER_URL);
+    if (!looksLikeResults(text)) {
+      throw new Error(
+        "Could not read national results from the official source or reader fallback",
+      );
+    }
   }
 
-  const parsed = parseOfficialResults(html);
-  const computed = computeMandates(parsed);
-
-  return {
-    ...computed,
-    sourceUrl: OFFICIAL_URL,
-    fetchedAt: new Date().toISOString(),
-    usedFallback,
-  };
+  const parsed = parseOfficialMarkdown(text);
+  return calculateMandates({
+    sourceUrl,
+    fetchedAt,
+    ...parsed,
+  });
 }
