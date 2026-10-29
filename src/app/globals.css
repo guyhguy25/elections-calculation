@@ -1,0 +1,601 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #f3efe6;
+  --ink: #13263a;
+  --accent: #0f6e56;
+  --line: rgba(19, 38, 58, 0.12);
+  --glow: rgba(15, 110, 86, 0.12);
+  --muted: rgba(19, 38, 58, 0.55);
+  --soft: rgba(19, 38, 58, 0.45);
+  --faint: rgba(19, 38, 58, 0.65);
+}
+
+body {
+  color: var(--ink);
+  background:
+    radial-gradient(900px 420px at 90% -8%, var(--glow), transparent 55%),
+    linear-gradient(160deg, #f7f3ea 0%, var(--paper) 45%, #ebe4d6 100%);
+  font-family: var(--font-heebo), "Heebo", sans-serif;
+  min-height: 100vh;
+}
+
+.page-shell {
+  width: min(42rem, 100%);
+  margin-inline: auto;
+  padding: 1.25rem 1rem 2.5rem;
+}
+
+@media (min-width: 640px) {
+  .page-shell {
+    width: min(56rem, 100%);
+    padding: 2rem 1.75rem 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-shell {
+    width: min(72rem, 100%);
+    padding: 2.5rem 2.25rem 3.5rem;
+  }
+}
+
+.page-footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.board {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.board-header {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.board-header-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-bottom: 0.15rem;
+}
+
+.brand {
+  font-family: var(--font-rubik), "Rubik", sans-serif;
+  font-size: clamp(2.2rem, 9vw, 3.25rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  animation: rise 0.7s ease-out both;
+}
+
+.lede {
+  max-width: 36rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--faint);
+  animation: rise 0.8s ease-out 0.05s both;
+}
+
+.refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.55rem 0.85rem;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+.refresh-btn:disabled {
+  opacity: 0.6;
+}
+
+.refresh-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+}
+
+.status-line {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.error-box {
+  border: 1px solid #fecaca;
+  background: #fff1f2;
+  color: #4c0519;
+  padding: 0.85rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.snapshot {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.meta-line {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.summary-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+@media (min-width: 640px) {
+  .summary-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.summary-chip {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.55);
+  padding: 0.55rem 0.65rem;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.summary-chip span {
+  font-size: 0.68rem;
+  color: var(--muted);
+  line-height: 1.2;
+}
+
+.summary-chip strong {
+  font-family: var(--font-rubik), "Rubik", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.summary-chip.emphasis {
+  border-color: rgba(15, 110, 86, 0.28);
+  background: rgba(15, 110, 86, 0.08);
+}
+
+.summary-chip.emphasis strong {
+  color: var(--accent);
+}
+
+.more-stats {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.35);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+.more-stats summary {
+  cursor: pointer;
+  color: var(--muted);
+  padding: 0.35rem 0;
+  list-style: none;
+}
+
+.more-stats summary::-webkit-details-marker {
+  display: none;
+}
+
+.more-stats summary::after {
+  content: " +";
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.more-stats[open] summary::after {
+  content: " –";
+}
+
+.more-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 1rem;
+  padding: 0.35rem 0 0.55rem;
+  color: var(--faint);
+}
+
+.more-stats-grid strong {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.delta-banner {
+  border: 1px solid rgba(15, 110, 86, 0.2);
+  background: rgba(15, 110, 86, 0.08);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.82rem;
+  animation: fade-up 0.4s ease-out both;
+}
+
+.section-head {
+  display: grid;
+  gap: 0.15rem;
+  margin-bottom: 0.55rem;
+}
+
+.section-title {
+  font-family: var(--font-rubik), "Rubik", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.section-note {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.party-section {
+  display: grid;
+}
+
+.party-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.party-row {
+  border-bottom: 1px solid var(--line);
+  animation: fade-up 0.4s ease-out both;
+}
+
+.party-row:nth-child(1) {
+  animation-delay: 0.02s;
+}
+.party-row:nth-child(2) {
+  animation-delay: 0.04s;
+}
+.party-row:nth-child(3) {
+  animation-delay: 0.06s;
+}
+.party-row:nth-child(4) {
+  animation-delay: 0.08s;
+}
+
+.party-main {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.7rem 0.1rem;
+}
+
+.party-rank {
+  width: 1.35rem;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--soft);
+  text-align: center;
+}
+
+.party-identity {
+  min-width: 0;
+  display: grid;
+  gap: 0.18rem;
+}
+
+.party-name {
+  font-weight: 650;
+  font-size: 0.98rem;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.party-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.55rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.party-meta .letters,
+.below-name .letters {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.party-seats {
+  display: grid;
+  justify-items: end;
+  gap: 0.12rem;
+  min-width: 3.4rem;
+}
+
+.seats-num {
+  font-family: var(--font-rubik), "Rubik", sans-serif;
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.exact-seats {
+  font-size: 0.68rem;
+  color: var(--soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.seat-with-tip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.seat-tip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.55rem;
+  padding: 0.08rem 0.3rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.2;
+  animation: tip-pop 0.45s ease-out both;
+}
+
+.seat-tip.up {
+  background: rgba(15, 110, 86, 0.14);
+  color: #0b5c48;
+}
+
+.seat-tip.down {
+  background: rgba(176, 45, 45, 0.12);
+  color: #8f1d1d;
+}
+
+.party-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0.15rem 0.2rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.party-total strong {
+  font-family: var(--font-rubik), "Rubik", sans-serif;
+  font-size: 1.25rem;
+  color: var(--ink);
+}
+
+.below-section {
+  display: grid;
+  gap: 0.45rem;
+  padding-top: 0.35rem;
+}
+
+.below-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.below-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+
+.below-name {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.below-name strong {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.below-nums {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--faint);
+}
+
+.below-gap {
+  color: var(--soft);
+  font-size: 0.75rem;
+}
+
+.below-more {
+  font-size: 0.75rem;
+  color: var(--soft);
+}
+
+@keyframes tip-pop {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Desktop: a bit wider and one notch larger type — mobile stays as-is */
+@media (min-width: 1024px) {
+  .board {
+    gap: 1.35rem;
+  }
+
+  .eyebrow {
+    font-size: 0.78rem;
+  }
+
+  .lede {
+    max-width: 44rem;
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+
+  .refresh-btn {
+    font-size: 0.92rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .meta-line {
+    font-size: 0.88rem;
+  }
+
+  .summary-chip {
+    padding: 0.75rem 0.9rem;
+  }
+
+  .summary-chip span {
+    font-size: 0.78rem;
+  }
+
+  .summary-chip strong {
+    font-size: 1.25rem;
+  }
+
+  .more-stats {
+    font-size: 0.95rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+  }
+
+  .section-note {
+    font-size: 0.85rem;
+  }
+
+  .party-main {
+    gap: 0.9rem;
+    padding: 0.9rem 0.2rem;
+  }
+
+  .party-rank {
+    width: 1.6rem;
+    font-size: 0.85rem;
+  }
+
+  .party-name {
+    font-size: 1.12rem;
+  }
+
+  .party-meta {
+    font-size: 0.82rem;
+    gap: 0.4rem 0.7rem;
+  }
+
+  .seats-num {
+    font-size: 1.85rem;
+  }
+
+  .exact-seats {
+    font-size: 0.78rem;
+  }
+
+  .seat-tip {
+    min-width: 1.7rem;
+    font-size: 0.75rem;
+  }
+
+  .party-total {
+    font-size: 1rem;
+    padding-top: 0.95rem;
+  }
+
+  .party-total strong {
+    font-size: 1.4rem;
+  }
+
+  .below-row {
+    font-size: 0.95rem;
+    padding: 0.55rem 0;
+  }
+
+  .below-gap,
+  .below-more,
+  .page-footer {
+    font-size: 0.82rem;
+  }
+
+  .delta-banner {
+    font-size: 0.92rem;
+    padding: 0.7rem 0.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand,
+  .lede,
+  .party-row,
+  .delta-banner,
+  .seat-tip {
+    animation: none;
+  }
+}
