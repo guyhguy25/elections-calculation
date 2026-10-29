@@ -33,20 +33,9 @@ npm run calc
 
 If the official page is unreachable from the server, the API falls back to a markdown reader of the same URL.
 
-## Deploy to Vercel
+## Production
 
-This is a standard Next.js app — no extra server config required.
-
-1. Push this repo to GitHub / GitLab / Cursor Origin  
-2. In Vercel: **Add New Project** → import the repo  
-3. Framework preset: Next.js (auto)  
-4. Deploy
-
-Or with the Vercel CLI after `vercel link`:
-
-```bash
-npx vercel
-```
+Live on Vercel: [https://elections-calculation.vercel.app](https://elections-calculation.vercel.app)
 
 ## Notes
 
